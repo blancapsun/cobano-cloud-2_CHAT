@@ -1,23 +1,35 @@
-# CÓBANO Cloud v2.2.0 — actualización de hora automática en fauna
+# CÓBANO Cloud v2.2.0
 
-## Cambios principales
-- La fecha inicial del registro ahora usa la fecha local del teléfono, evitando el desfase que podía producir `toISOString()` al construir la fecha visible.
-- La hora de registro se captura automáticamente al pulsar Guardar y se muestra en formato de 24 horas `HH:mm:ss`.
-- La hora se muestra como solo lectura: no hace falta escribirla manualmente.
-- Se guarda una marca de tiempo ISO, la zona horaria del dispositivo y el desfase respecto a UTC para trazabilidad.
-- Se separan las columnas Fecha y Hora en la lista de observaciones de fauna.
-- La exportación CSV incluye fecha, hora local, marca de tiempo ISO, zona horaria y desfase UTC.
-- La exportación KML incorpora fecha, hora local y marca de tiempo en la descripción del punto.
-- La vista de Equipo sincroniza y muestra la fecha y hora de los registros de fauna.
-- La pantalla inicial utiliza los iconos CÓBANO aportados y se renueva el nombre de caché del service worker para forzar actualización.
+Aplicación web progresiva (PWA) para inventarios forestales y registros biológicos en Android.
 
-## Publicar en Netlify
-1. Extrae este ZIP.
-2. Sube el contenido de esta carpeta directamente a un sitio de Netlify (no subas la carpeta comprimida dentro de otra carpeta).
-3. Abre la URL HTTPS en Chrome para Android y selecciona Instalar aplicación / Agregar a pantalla principal.
+## Archivos del proyecto
 
-## Notas
-- La hora utiliza el reloj y la zona horaria configurados en el teléfono.
-- La marca de tiempo representa el momento en que se inicia el guardado; la fecha de observación puede corregirse manualmente para capturas registradas posteriormente.
-- Para mostrar registros entre dispositivos, Firebase sigue requiriendo la configuración real en `team.js` y las reglas de seguridad del proyecto.
-- Como es una PWA, esto no es un APK firmado.
+- `index.html`: interfaz y módulos principales de la app.
+- `bio.js`: registro de fauna, fecha/hora automática, diversidad y exportación CSV/KML.
+- `team.js`: funciones opcionales de equipo, sincronización, ubicación y mensajes de voz.
+- `sw.js`: service worker y caché de la aplicación.
+- `manifest.webmanifest`: configuración de instalación PWA.
+- `icon-192.png` y `icon-512.png`: iconos de CÓBANO.
+
+## Publicar en GitHub Pages
+
+1. Crea un repositorio nuevo en GitHub.
+2. Sube **todos los archivos de esta carpeta directamente a la raíz del repositorio** (no subas el ZIP dentro del repositorio).
+3. En el repositorio entra a **Settings → Pages**.
+4. En **Build and deployment**, selecciona **Deploy from a branch**, elige `main` y la carpeta `/ (root)`, y guarda.
+5. Abre la URL HTTPS que proporcione GitHub Pages desde Chrome en Android. Usa el menú de Chrome para instalar/agregar a pantalla principal.
+
+## Hora de registros de fauna
+
+Al pulsar Guardar, `bio.js` captura la hora local del teléfono en formato `HH:mm:ss`, guarda la marca ISO, zona horaria y desfase UTC. CSV y KML incluyen fecha/hora cuando corresponde.
+
+## Configuración importante
+
+- Las funciones compartidas entre teléfonos (equipo, ubicación remota y radio) requieren configurar un proyecto Firebase en `team.js`, habilitar los servicios necesarios y definir reglas de seguridad adecuadas. Los campos de configuración se dejan vacíos deliberadamente; no publiques credenciales privadas.
+- La app puede guardar localmente; exporta copias de respaldo con regularidad. Borrar los datos del navegador puede borrar el almacenamiento local.
+- Los catálogos y consultas de especies pueden depender de conexión a internet.
+- Esta entrega es una PWA instalable, no un APK Android firmado.
+
+## Nota
+
+Revisa la aplicación en un teléfono antes de usarla en levantamientos oficiales; valida las fórmulas y el formato de tus entregables de acuerdo con la metodología del proyecto.
