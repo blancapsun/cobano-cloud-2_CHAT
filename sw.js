@@ -1,0 +1,5 @@
+const V='cobano-v3-time-auto',CORE=['./','index.html','team.js','bio.js','manifest.webmanifest','icon-192.png','icon-512.png'],CDN=['https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js','https://cdn.jsdelivr.net/npm/shpjs@4.0.4/dist/shp.min.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(async c=>{await c.addAll(CORE);for(const u of CDN){try{await c.put(u,await fetch(u,{mode:'no-cors'}))}catch(_){}}}));self.skipWaiting()});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=V).map(x=>caches.delete(x)))));self.clients.claim()});
+self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET')return;const same=new URL(r.url).origin==location.origin;if(!same&&!CDN.includes(r.url))return;
+e.respondWith(fetch(r).then(n=>{if(same){const c=n.clone();caches.open(V).then(x=>x.put(r,c))}return n}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))))});
